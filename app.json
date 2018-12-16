@@ -1,0 +1,7 @@
+{
+  "name": "site-discussion",
+  "description": "サイト議論サイト",
+  "logo": "",
+  "keywords": ["node"],
+  "image": "heroku/nodejs"
+}
