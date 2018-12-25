@@ -19,6 +19,7 @@
     "morgan": "~1.9.0",
     "passport": "^0.3.2",
     "passport-github2": "^0.1.9",
+    "passport-twitter": "^1.0.4",
     "pg": "^7.4.1",
     "pg-hstore": "^2.3.2",
     "popper.js": "^1.14.0",
@@ -33,7 +34,7 @@
     "webpack": "^4.26.1",
     "webpack-cli": "^3.1.2"
   },
-    "engines": {
-      "node": "8.9.4"
-     }
+  "engines": {
+    "node": "8.9.4"
+  }
 }
