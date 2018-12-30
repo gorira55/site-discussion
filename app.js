@@ -54,8 +54,8 @@ passport.use(new GitHubStrategy({
 ));
 
 var TwitterStrategy = require('passport-twitter').Strategy;
-var TWITTER_CONSUMER_KEY = '1SKWLqGlSN0ao6cfn9ytBtYL3';
-var TWITTER_CONSUMER_SECRET = 'wBZrdGUIcH9Eb6UazxlVSR93lCNHbQOA2z0AwuSXRD9CjrhPOP';
+var TWITTER_CONSUMER_KEY = process.env.TWITTER_CONSUMER_KEY || '1SKWLqGlSN0ao6cfn9ytBtYL3';
+var TWITTER_CONSUMER_SECRET = process.env.TWITTER_CONSUMER_SECRET || 'wBZrdGUIcH9Eb6UazxlVSR93lCNHbQOA2z0AwuSXRD9CjrhPOP';
 
 passport.serializeUser(function (user, done) {
   done(null, user);
@@ -68,7 +68,7 @@ passport.deserializeUser(function (obj, done) {
 passport.use(new TwitterStrategy({
   consumerKey: TWITTER_CONSUMER_KEY,
   consumerSecret: TWITTER_CONSUMER_SECRET,
-  callbackURL: "https://infinite-scrubland-66648.herokuapp.com/auth/twitter/callback"
+  callbackURL: process.env.HEROKU_URL ? process.env.HEROKU_URL + 'auth/twitter/callback' : 'http://localhost:8000/auth/twitter/callback'
 },
   function (accessToken, refreshToken, profile, done) {
     process.nextTick(function () {
