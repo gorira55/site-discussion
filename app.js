@@ -53,35 +53,6 @@ passport.use(new GitHubStrategy({
   }
 ));
 
-var TwitterStrategy = require('passport-twitter').Strategy;
-var TWITTER_CONSUMER_KEY = process.env.TWITTER_CONSUMER_KEY || '1SKWLqGlSN0ao6cfn9ytBtYL3';
-var TWITTER_CONSUMER_SECRET = process.env.TWITTER_CONSUMER_SECRET || 'wBZrdGUIcH9Eb6UazxlVSR93lCNHbQOA2z0AwuSXRD9CjrhPOP';
-
-passport.serializeUser(function (user, done) {
-  done(null, user);
-});
-
-passport.deserializeUser(function (obj, done) {
-  done(null, obj);
-});
-
-passport.use(new TwitterStrategy({
-  consumerKey: TWITTER_CONSUMER_KEY,
-  consumerSecret: TWITTER_CONSUMER_SECRET,
-  callbackURL: process.env.HEROKU_URL ? process.env.HEROKU_URL + 'auth/twitter/callback' : 'http://localhost:8000/auth/twitter/callback'
-},
-  function (accessToken, refreshToken, profile, done) {
-    process.nextTick(function () {
-      User.upsert({
-        userId: profile.id,
-        username: profile.username
-      }).then(() => {
-        done(null, profile);
-      });
-    });
-  }
-));
-
 var indexRouter = require('./routes/index');
 var loginRouter = require('./routes/login');
 var logoutRouter = require('./routes/logout');
@@ -120,26 +91,6 @@ app.get('/auth/github',
 
 app.get('/auth/github/callback',
   passport.authenticate('github', { failureRedirect: '/login' }),
-  function (req, res) {
-    var loginFrom = req.cookies.loginFrom;
-    // オープンリダイレクタ脆弱性対策
-    if (loginFrom &&
-     !loginFrom.includes('http://') &&
-     !loginFrom.includes('https://')) {
-      res.clearCookie('loginFrom');
-      res.redirect(loginFrom);
-    } else {
-      res.redirect('/');
-    }
-  });
-
-  app.get('/auth/twitter',
-  passport.authenticate('twitter', { scope: ['user:email'] }),
-  function (req, res) {
-});  
-
-  app.get('/auth/twitter/callback',
-  passport.authenticate('twitter', { failureRedirect: '/login' }),
   function (req, res) {
     var loginFrom = req.cookies.loginFrom;
     // オープンリダイレクタ脆弱性対策
